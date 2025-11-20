@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Interview App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Question Builder Page -->
+    <div id="builder-page" class="page active">
+        <div class="container">
+            <h1>Question Builder</h1>
+            
+            <div class="question-form">
+                <h2>Add New Question</h2>
+                <input type="text" id="question-text" placeholder="Enter question text" />
+                
+                <div class="branching-section">
+                    <h3>Branching Rules</h3>
+                    <div id="branch-rules">
+                        <div class="branch-rule">
+                            <input type="text" class="branch-answer" placeholder="Answer type (e.g., positive)" />
+                            <select class="branch-target">
+                                <option value="">Select next question...</option>
+                            </select>
+                            <button type="button" class="remove-branch">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-branch" class="btn-secondary">Add Branch</button>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="save-question" class="btn-primary">Save Question</button>
+                    <button type="button" id="cancel-edit" class="btn-secondary" style="display: none;">Cancel Edit</button>
+                </div>
+            </div>
+            
+            <div class="questions-list">
+                <h2>Saved Questions</h2>
+                <div id="questions-container"></div>
+            </div>
+            
+            <div class="page-actions">
+                <button id="start-interview" class="btn-primary btn-large">Start Interview</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Interview Mode Page -->
+    <div id="interview-page" class="page">
+        <div class="container">
+            <h1>Interview Mode</h1>
+            
+            <div id="interview-content">
+                <div class="question-display">
+                    <h2 id="current-question-text">No question available</h2>
+                </div>
+                
+                <div class="notes-section">
+                    <label for="interview-notes">Notes:</label>
+                    <textarea id="interview-notes" placeholder="Type your notes here..."></textarea>
+                </div>
+                
+                <div class="branch-buttons" id="branch-buttons">
+                    <!-- Branch buttons will be dynamically generated -->
+                </div>
+                
+                <div class="interview-actions">
+                    <button id="next-question" class="btn-primary btn-large" style="display: none;">Next</button>
+                    <button id="end-interview" class="btn-secondary btn-large">End Interview</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Export Page -->
+    <div id="export-page" class="page">
+        <div class="container">
+            <h1>Export Interview</h1>
+            
+            <div id="export-preview">
+                <pre id="export-content"></pre>
+            </div>
+            
+            <div class="page-actions">
+                <button id="download-export" class="btn-primary btn-large">Download as .txt</button>
+                <button id="back-to-builder" class="btn-secondary btn-large">Back to Builder</button>
+                <button id="new-interview" class="btn-secondary btn-large">New Interview</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
+
