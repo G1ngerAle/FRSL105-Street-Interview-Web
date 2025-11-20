@@ -369,6 +369,42 @@ h3 {
     }
 }
 
+/* Import Section */
+.import-section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.import-info {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.import-error {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #fee;
+    border: 2px solid #e74c3c;
+    border-radius: 6px;
+    color: #c0392b;
+    font-size: 14px;
+}
+
+.import-success {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #efe;
+    border: 2px solid #27ae60;
+    border-radius: 6px;
+    color: #229954;
+    font-size: 14px;
+}
+
 /* Empty state */
 .empty-state {
     text-align: center;
@@ -380,4 +416,5 @@ h3 {
     font-size: 16px;
     margin-bottom: 16px;
 }
+
 

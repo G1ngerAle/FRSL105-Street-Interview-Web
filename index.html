@@ -36,6 +36,14 @@
                 </div>
             </div>
             
+            <div class="import-section">
+                <h2>Import Questions</h2>
+                <p class="import-info">Import questions from a .txt or .md file. Each numbered line will become a question.</p>
+                <input type="file" id="file-input" accept=".txt,.md" style="display: none;" />
+                <button id="import-questions" class="btn-secondary btn-large">Import Questions from File</button>
+                <div id="import-error" class="import-error" style="display: none;"></div>
+            </div>
+            
             <div class="questions-list">
                 <h2>Saved Questions</h2>
                 <div id="questions-container"></div>
@@ -94,4 +102,5 @@
     <script src="app.js"></script>
 </body>
 </html>
+
 

@@ -32,6 +32,10 @@ function setupEventListeners() {
     document.getElementById('add-branch').addEventListener('click', addBranchRule);
     document.getElementById('start-interview').addEventListener('click', startInterview);
     document.getElementById('cancel-edit').addEventListener('click', cancelEdit);
+    document.getElementById('import-questions').addEventListener('click', () => {
+        document.getElementById('file-input').click();
+    });
+    document.getElementById('file-input').addEventListener('change', handleFileImport);
     
     // Interview page
     document.getElementById('next-question').addEventListener('click', handleNext);
@@ -461,4 +465,122 @@ function downloadExport() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
+
+// Handle file import
+function handleFileImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Validate file type
+    const fileName = file.name.toLowerCase();
+    if (!fileName.endsWith('.txt') && !fileName.endsWith('.md')) {
+        showImportError('Invalid file type. Please select a .txt or .md file.');
+        event.target.value = ''; // Reset file input
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const content = e.target.result;
+            const parsedQuestions = parseQuestionsFromFile(content);
+            
+            if (parsedQuestions.length === 0) {
+                showImportError('No questions found in the file. Please ensure questions are numbered (1., 1), 1 -, or 1:).');
+                event.target.value = '';
+                return;
+            }
+            
+            // Merge imported questions with existing questions
+            questions = questions.concat(parsedQuestions);
+            saveQuestions();
+            renderQuestions();
+            updateBranchTargets();
+            
+            // Show success message
+            showImportSuccess(`Successfully imported ${parsedQuestions.length} question(s).`);
+            
+            // Reset file input
+            event.target.value = '';
+        } catch (error) {
+            showImportError('Error reading file: ' + error.message);
+            event.target.value = '';
+        }
+    };
+    
+    reader.onerror = () => {
+        showImportError('Error reading file. Please try again.');
+        event.target.value = '';
+    };
+    
+    reader.readAsText(file);
+}
+
+// Parse questions from file content
+function parseQuestionsFromFile(content) {
+    const lines = content.split(/\r?\n/);
+    const parsedQuestions = [];
+    
+    // Regex patterns for different numbering formats
+    const patterns = [
+        /^\s*(\d+)\.\s+(.+)$/,      // 1. question
+        /^\s*(\d+)\)\s+(.+)$/,      // 1) question
+        /^\s*(\d+)\s+-\s+(.+)$/,    // 1 - question
+        /^\s*(\d+):\s+(.+)$/        // 1: question
+    ];
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue; // Skip empty lines
+        
+        // Try to match any of the numbering patterns
+        let match = null;
+        for (const pattern of patterns) {
+            match = line.match(pattern);
+            if (match) break;
+        }
+        
+        if (match) {
+            const questionText = match[2].trim();
+            if (questionText) {
+                // Create question object
+                const question = {
+                    id: generateQuestionId(),
+                    text: questionText,
+                    branchingRules: {}
+                };
+                parsedQuestions.push(question);
+            }
+        }
+    }
+    
+    return parsedQuestions;
+}
+
+// Show import error
+function showImportError(message) {
+    const errorDiv = document.getElementById('import-error');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    errorDiv.className = 'import-error';
+    
+    // Hide after 5 seconds
+    setTimeout(() => {
+        errorDiv.style.display = 'none';
+    }, 5000);
+}
+
+// Show import success
+function showImportSuccess(message) {
+    const errorDiv = document.getElementById('import-error');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    errorDiv.className = 'import-success';
+    
+    // Hide after 5 seconds
+    setTimeout(() => {
+        errorDiv.style.display = 'none';
+    }, 5000);
+}
+
 
